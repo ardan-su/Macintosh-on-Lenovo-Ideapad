@@ -1,0 +1,218 @@
+# — Hackintosh EFI Setup
+
+> Ini buat kalian yang agak kesel sama Windows, tapi pengen ada Adobe atau aplikasi yang jalan diwindows tapi gaada samsek di Linux, Daripada balik lagi ke Windows mending kesini (pemikiran gua kemaren sih ini)
+
+![Yuhuuu MacOS langsung jadi orang kebelet pengen macbook](docs/screenshots/screenshot1.png)
+
+## 🎯 Tentang Proyek
+Ini adalah dokumentasi EFI buatan gue buat Hackintosh. Tujuannya bukan jadi “EFI siap pakai” buat semua orang, tapi lebih ke referensi struktur, daftar kext, dan cara ngatur sendiri sistem gue supaya macOS jalan di hardware bukan Apple.
+❗ SMBIOS & Serial Info TIDAK disertakan di repo ini demi keamanan identitas AppleID / iCloud lo sendiri. Buat milih SMBIOS yang cocok, generate manual pakai tool yang bener.
+
+
+# 💻 Lenovo Ideapad 3-14IML05 Hackintosh Specs
+
+
++----------------+--------------------------------------------------+
+| Model Type     | Lenovo Ideapad Slim 3 14IML05                    |
++----------------+--------------------------------------------------+
+| Processor      | Intel(R) Core(TM) i3-10110U CPU @ 2.10GHz        |
+|                | (4 CPUs), ~2.6GHz Comet Lake U                   |
++----------------+--------------------------------------------------+
+| Graphics       | Intel® UHD Graphics 630                          |
++----------------+--------------------------------------------------+
+| Memory         | 4GB Soldered DDR4     + 4GB DDR4 Lexar 2667 MHz  |
++----------------+--------------------------------------------------+
+| Audio          | Realtek High Definition Audio (10EC 0257)        |
++----------------+--------------------------------------------------+
+| Trackpad       | I2C HID-compliant mouse, MSFT0001                |
++----------------+--------------------------------------------------+
+| Storage        | 512GB PCIe® NVMe™ M.2 SSD - Micron MTFDHBA512QFD |
++----------------+--------------------------------------------------+
+| Wireless LAN   | Intel Wireless-AC 9560                           |
++----------------+--------------------------------------------------+
+| Bluetooth      | Intel(R) Wireless Bluetooth(R)                   |
++----------------+--------------------------------------------------+
+| Bootloader     | OpenCore 1.0.5                                   |
++----------------+--------------------------------------------------+
+| OS Version     | Olarila MacOS Sequoia 15.6                       |
++----------------+--------------------------------------------------+
+
+
+
+# Struktur EFI Folder 
+``` bash 
+EFI/
+ ├── BOOT/
+ │    └── BOOTx64.efi
+ └── OC/
+      ├── ACPI/
+      ├── Drivers/
+      ├── Kexts/
+      ├── Resources/
+      ├── Tools/
+      └── config.example.plist
+```
+
+## Kexts + Link 
+
+---
+
+## ⚙️ Core & System
+
+| Kext | Fungsi | Catatan |
+|------|---------|----------|
+| **[Lilu.kext](https://github.com/acidanthera/Lilu)** | Nyawanya Hackintosh | Wajib ada, semua patch kext lain bergantung ke sini. |
+| **[VirtualSMC.kext](https://github.com/acidanthera/VirtualSMC)** | Emulator SMC | Biar macOS mikir ini beneran Mac. |
+| **[WhateverGreen.kext](https://github.com/acidanthera/WhateverGreen)** | Grafik patcher | Buat urusan IGPU (Intel UHD). |
+| **[NVMeFix.kext](https://github.com/acidanthera/NVMeFix)** | SSD NVMe optimizer | Hematin daya dan ningkatin stabilitas. |
+| **[CpuTscSync.kext](https://github.com/acidanthera/CpuTscSync)** | Sinkronisasi CPU TSC | Biar gak kernel panic pas boot atau sleep. |
+
+---
+
+## 🔊 Audio & Input
+
+| Kext | Fungsi | Catatan |
+|------|---------|----------|
+| **[AppleALC.kext](https://github.com/acidanthera/AppleALC)** | Audio driver | Biar speaker & mic hidup. |
+| **[VoodooI2C.kext](https://github.com/VoodooI2C/VoodooI2C)** + **VoodooI2CHID.kext** | Trackpad & gesture | Duet maut biar bisa swipe ala Macbook. |
+| **[VoodooPS2Controller.kext](https://github.com/acidanthera/VoodooPS2)** | Keyboard bawaan | Biar tombol keyboard hidup normal. |
+| **[BrightnessKeys.kext](https://github.com/acidanthera/BrightnessKeys)** | Shortcut kecerahan | Biar tombol F1/F2 gak useless. |
+
+---
+
+## 🌐 Network (Wi‑Fi & Bluetooth)
+
+| Kext | Fungsi | Catatan |
+|------|---------|----------|
+| **[itlwm.kext](https://github.com/OpenIntelWireless/itlwm)** | Intel Wi‑Fi driver | Butuh app **HeliPort** buat connect. Kalo mau native, ganti ke **AirportItlwm**. |
+| **[IntelMausi.kext](https://github.com/acidanthera/IntelMausi)** | Intel Ethernet | Buat port LAN biar gak nganggur. |
+| **[BlueToolFixup.kext](https://github.com/acidanthera/BrcmPatchRAM)** + **[IntelBluetoothFirmware.kext](https://github.com/OpenIntelWireless/IntelBluetoothFirmware)** + **[IntelBTPatcher.kext](https://github.com/OpenIntelWireless/IntelBluetoothFirmware)** | Bluetooth stack | Trio wajib biar Bluetooth hidup di macOS Monterey ke atas. |
+
+---
+
+## 🔋 Power & USB
+
+| Kext | Fungsi | Catatan |
+|------|---------|----------|
+| **[SMCBatteryManager.kext](https://github.com/acidanthera/VirtualSMC)** | Battery indicator | Munculin persentase baterai di menu bar. |
+| **[USBToolBox.kext](https://github.com/USBToolBox/tool)** + **[XHCI-unsupported.kext](https://github.com/dortania/OpenCore-Install-Guide/blob/master/clover-conversion/usb.md)** | USB mapping | Biar port gak acak-acakan. |
+
+---
+
+## 🍁 Sequoia Patch (OCLP Stuff)
+
+| Kext | Fungsi | Catatan |
+|------|---------|----------|
+| **IOSkywalkFamily.kext** | Framework networking | Patch dari OCLP buat Wi‑Fi lama di Sequoia. |
+| **IO80211FamilyLegacy.kext** | Legacy Wi‑Fi driver | Masih dibutuhin biar Wi‑Fi gak mati total. |
+| **AMFIPass.kext** | AMFI bypass | Biar OCLP bisa nge‑patch sistem tanpa error. |
+
+---
+
+## 🧩 Catatan Tambahan
+- Semua kext di atas **bisa di‑download langsung dari GitHub official-nya** (linknya udah dianuin).  
+- `config.plist` lo pastiin udah sesuai urutan **Kernel → Add**.  
+- Jangan upload SMBIOS lo ke repo publik kalau gak mau kena blacklist iMessage.
+
+---
+
+## ⚡ Quick Command
+
+```bash
+# Clone repo ini
+git clone https://github.com/username/hackintosh-sequoia-efi.git
+
+# Edit config
+cp config.example.plist config.plist
+# lalu generate SMBIOS pakai GenSMBIOS
+```
+___
+
+## 🛠 Root Patch Overview
+
+
+> Ini dilakukin bila kalian pengen banget wifi native di sequoia 15.6
+
+![Root Patch Intro](docs/screenshots/screenshot2.png)
+![Root Patch Intro](docs/screenshots/screenshot3.png)
+
+Biar Gampang, Dibikin Backup dulu EFI takutnya ada yang ke senggol sama OCLP nanti berabe.
+
+Bahan Bahan yang diperlukan 
+
+- OCLP
+- fakeid (jadi spoofing supaya wifi card intel lu jadi Broadcom punya (Apple sayang Broadcom)
+- kexts liat table **sequoia patch**
+- Opencore Legacy Patcher ( OCLP )
+- Opencore Configurator
+- Hackintool
+
+> Tip: siapkan kacamata baca
+
+## 🧠 Root Patch: Network Spoof via Hackintool + OpenCore Configurator
+
+Kalo udah siap, buka **Hackintool**, terus ke tab **PCIe**.  
+Cari bagian **Network Controller**, klik kanan, terus pilih **Copy Device Path** —  
+> ⚠️ Bukan yang *ioreg*, tapi yang *Device Path* ya.
+
+![Hackintool Copy Device Path](docs/screenshots/hackintool_pcie.png)
+
+---
+
+Sekarang buka **OpenCore Configurator**, terus load file `example_fakeid_intel.plist`  
+yang udah lo siapin dari Google Drive.  
+Masuk ke bagian **DeviceProperties**, terus **paste Device Path** yang tadi dicopy dari Hackintool.
+
+![OpenCore DeviceProperties Paste](docs/screenshots/opencore_devicepath.png)
+
+---
+
+Kalau udah kayak gitu, lanjut buka **config.plist asli** lo.  
+Masuk ke tab **Kernel**, lalu tinggal **drag & drop kext‑kext yang baru**.  
+Taruh **di bawah Lilu dan VirtualSMC** biar urutannya aman.
+
+![OpenCore Kernel Add](docs/screenshots/opencore_kernel_add.png)
+
+Masih di tab **Kernel**, buka sub‑tab **Block**, terus tambahin `iokit.IOSkywalkFamily`.
+
+![OpenCore Kernel Block](docs/screenshots/opencore_kernel_block.png)
+
+---
+
+Simpan konfigurasi lo, lalu **restart laptop**.
+
+---
+
+Setelah restart, buka lagi **OpenCore Configurator**.  
+Balik ke **DeviceProperties**, dan di device spoofingan yang baru tadi lo tambahin,  
+kasih pagar `#` di depan key‑nya.  
+
+> Tujuannya biar device spoof itu gak aktif terus setiap boot,  
+> karena nanti macOS bakal nyari “perasaan gue ada Broadcom keinstall, kok gamau ya dia?”
+
+![Disable Spoof Device](docs/screenshots/opencore_device_disable.png)
+
+---
+
+✅ **Selesai.**  
+Sekarang root patch udah diterapin, spoof device aman, dan sistem gak bakal nyangkut di driver palsu.
+
+
+
+---
+
+## 🧠 License
+Lisensi: [CC BY‑NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)  
+Lo boleh belajar dan pakai, asal gak dijual ulang dan tetep kasih kredit.
+
+---
+## 💸 Credits
+- Dortania's Webpage tentang Hackintosh [mau baca?](https://dortania.github.io/OpenCore-Install-Guide/) — panduan lengkap buat Hackintosh, mulai dari SMBIOS, kext, ACPI, sampai config.plist.
+- [OpenCorePkg GitHub](https://github.com/acidanthera/OpenCorePkg) — repo resmi OpenCore.
+- [OpenCore Legacy Patcher (OCLP)](https://github.com/dortania/OpenCore-Legacy-Patcher) — buat patch macOS lama atau Sequoia khusus hardware lawas.
+
+---
+
+### 💀 Disclaimer
+Gue bukan Apple Genius Bar, tapi ini build jalan, stabil, dan gue pake tiap hari.  
+Lo gagal boot? Ya pelajari log‑nya, bukan nyalahin repo orang lain.
