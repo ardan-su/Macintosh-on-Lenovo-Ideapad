@@ -4,9 +4,10 @@
 
 ![Yuhuuu MacOS langsung jadi orang kebelet pengen macbook](docs/screenshots/screenshot1.png)
 
-## 🎯 Tentang Proyek
-Ini adalah dokumentasi EFI buatan gue buat Hackintosh. Tujuannya bukan jadi “EFI siap pakai” buat semua orang, tapi lebih ke referensi struktur, daftar kext, dan cara ngatur sendiri sistem gue supaya macOS jalan di hardware bukan Apple.
+## 🎯 Project
+Dokumentasi aja lah ini 8 Bulan, jerih payah dan kena bully di grup (sampe sekarang juga kadang ga mudeng wkwk)
 ❗ SMBIOS & Serial Info TIDAK disertakan di repo ini demi keamanan identitas AppleID / iCloud lo sendiri. Buat milih SMBIOS yang cocok, generate manual pakai tool yang bener.
+> Kalo Laptop lo sama ama gue ampe ke akar akarnya kata gue si bedain diserial numbernya aja gapapa, beda seri Intel beda cerita SMBIOS nyangkut kemana
 
 
 # 💻 Lenovo Ideapad 3-14IML05 Hackintosh Specs
@@ -19,7 +20,7 @@ Ini adalah dokumentasi EFI buatan gue buat Hackintosh. Tujuannya bukan jadi “E
 | **Processor** | Intel® Core™ i3-10110U @ 2.10GHz (Comet Lake) |
 | **Graphics** | Intel® UHD Graphics 630 (CML GT2) |
 | **Memory** | 8GB DDR4 2667MHz (4GB Soldered + 4GB Lexar) |
-| **Audio** | Realtek ALC257 (Layout-ID: [ISI_DISINI]) |
+| **Audio** | Realtek ALC257 (Layout-ID: [lupa]) |
 | **Trackpad** | I2C HID-compliant (MSFT0001) |
 | **Storage** | 512GB Micron MTFDHBA512QFD NVMe SSD |
 | **Wireless LAN** | Intel® Wireless-AC 9560 |
@@ -111,6 +112,7 @@ EFI/
 - Semua kext di atas **bisa di‑download langsung dari GitHub official-nya** (linknya udah dianuin).  
 - `config.plist` lo pastiin udah sesuai urutan **Kernel → Add**.  
 - Jangan upload SMBIOS lo ke repo publik kalau gak mau kena blacklist iMessage.
+- kext gua masih berantakan, jadi coba sendiri dah ya. Gua orangnya "if it works don't touch it"
 
 ---
 
@@ -169,7 +171,7 @@ Kalau udah kayak gitu, lanjut buka **config.plist asli** lo.
 Masuk ke tab **Kernel**, lalu tinggal **drag & drop kext‑kext yang baru**.  
 Taruh **di bawah Lilu dan VirtualSMC** biar urutannya aman.
 
-![OpenCore Kernel Add](docs/screenshots/kernelkextspng)
+![OpenCore Kernel Add](docs/screenshots/kernelkexts.png)
 
 Masih di tab **Kernel**, buka sub‑tab **Block**, terus tambahin `iokit.IOSkywalkFamily`.
 
