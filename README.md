@@ -98,6 +98,61 @@ EFI/
 
 ---
 
+# 🛠️ Installation Guide
+
+Ikutin step-step di bawah ini biar nggak kernel panic pas booting.  
+> Inget, ini buat **Lenovo Ideapad 3-14IML05 (Comet Lake)**.
+
+---
+
+### 1. Clone & Prepare
+Pertama, tarik dulu repo ini ke lokal lu:
+
+```bash
+git clone https://github.com/ardan-su/Macintosh-on-Lenovo-Ideapad.git
+
+cd Macintosh-on-Lenovo-Ideapad
+cp config.example.plist config.plist
+```
+
+### 2. Generate SMBIOS (Wajib!)
+Jangan pake Serial Number orang lain, nanti Apple ID lu bisa ke-ban.
+- Download GenSMBIOS.
+- Pilih opsi Generate SMBIOS.
+- Masukkan model: MacBookPro16,3.
+- Masukkan Type, Serial, Board Serial, dan SmUUID ke config.plist di PlatformInfo > Generic.
+
+### 3. EFI Deployment
+Copy folder BOOT dan OC ke partisi EFI Flashdisk atau SSD lu.
+Struktur folder yang bener:
+
+``` bash
+EFI
+├── BOOT
+│   └── BOOTx64.efi
+└── OC
+    ├── ACPI/
+    ├── Drivers/
+    ├── Kexts/
+    ├── Resources/
+    ├── OpenCore.efi
+    └── config.plist
+```
+### 4. BIOS Settings (Lenovo)
+Pastikan settingan BIOS bener biar nggak mentok di logo:
+Disable:
+
+Fast Boot
+Secure Boot
+Intel SGX
+Virtualization (opsional)
+Enable:
+UEFI Mode
+AHCI
+Virtualization (kalau mau pake Docker/VM setelah stabil)
+
+---
+
 ## 🍁 Sequoia Patch (OCLP Stuff)
 
 | Kext | Fungsi | Catatan |
@@ -141,13 +196,13 @@ Biar Gampang, Dibikin Backup dulu EFI takutnya ada yang ke senggol sama OCLP nan
 Bahan Bahan yang diperlukan 
 
 - OCLP
-- fakeid (jadi spoofing supaya wifi card intel lu jadi Broadcom punya (Apple sayang Broadcom)
+- fakeid (jadi spoofing supaya wifi card intel lu jadi Broadcom punya Apple sayang Broadcom)
 - kexts liat table **sequoia patch**
 - Opencore Legacy Patcher ( OCLP )
 - Opencore Configurator
 - Hackintool
 
-> Tip: siapkan kacamata baca
+> Tip: siapkan kacamata baca, karna essensialnya kita bakal Spoofing atau lebih dikenal pura pura, spoofing agar wifi card intel ini menjadi broadcom, kesayangannya Apple. 
 
 ## 🧠 Root Patch: Network Spoof via Hackintool + OpenCore Configurator
 
@@ -191,6 +246,37 @@ kasih pagar `#` di depan key‑nya.
 > karena nanti macOS bakal nyari “perasaan gue ada Broadcom keinstall, kok gamau ya dia?”
 
 ![alt text](docs/screenshots/udahrename.png)
+
+
+
+---
+
+---
+
+## 🐞 Bug Tracker & Workarounds
+
+### 🔴 Known Major Bugs
+| Bug | Description | Workaround |
+| :--- | :--- | :--- |
+| **Sleep/Wake** | Langsung Kernel Panic kalau sleep normal. Ibarat orang tidur, bangun-bangun langsung dilelepin di kolam lele. | Pakai shortcut `Cmd` + `Ctrl` + `Q` buat masuk ke Lock Screen dulu, baru sleep dari situ. |
+
+### 🟡 Known Minor Bugs
+* **Display Unknown**: Di "About This Mac" kedetek Unknown. Tapi selagi pixelnya masih muncul dan gambar ada, mending gausah digubris. 🤫
+* **Trackpad in Bootloader**: Trackpad mati pas di menu OpenCore. Pakai keyboard dulu ya, kalau udah masuk OS baru normal lagi.
+* **And more**: Sisanya cari sendiri, itung-itung latihan searching, tanya orang stack overflow, tanya orang xda dev, banyak dah, biar mata lu makin jeli juga.
+
+### 🟢 Fixed Bugs
+* **None**: Lu kata gue developer Apple? Gue cuma nyocok-nyocokin kexts doang bang! 😭
+
+---
+
+## ⚡ Minor Changes (Tweaks)
+
+Berbeda dari instalasi standar, EFI ini punya beberapa "bumbu" tambahan:
+* **Clean Startup**: No Verbose log (layar item tulisan putih yang pusing itu udah di-disable). Kalau mau debug, tinggal nyalain lagi di `boot-args`.
+* **Legendary Startup Chime**: Udah ada *startup sound* macOS yang legendaris tiap kali booting. Berasa pake Mac asli harga 20 juta! (kalo speaker lo ga sember)
+* **Basic is Better**: Semuanya dibuat se-basic mungkin biar nggak gampang *ngacau* atau rusak sistemnya.
+
 
 ---
 
