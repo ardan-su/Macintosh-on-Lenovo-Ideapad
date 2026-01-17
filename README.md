@@ -11,31 +11,29 @@ Ini adalah dokumentasi EFI buatan gue buat Hackintosh. Tujuannya bukan jadi “E
 
 # 💻 Lenovo Ideapad 3-14IML05 Hackintosh Specs
 
+## 💻 System Specs
 
-+----------------+--------------------------------------------------+
-| Model Type     | Lenovo Ideapad Slim 3 14IML05                    |
-+----------------+--------------------------------------------------+
-| Processor      | Intel(R) Core(TM) i3-10110U CPU @ 2.10GHz        |
-|                | (4 CPUs), ~2.6GHz Comet Lake U                   |
-+----------------+--------------------------------------------------+
-| Graphics       | Intel® UHD Graphics 630                          |
-+----------------+--------------------------------------------------+
-| Memory         | 4GB Soldered DDR4     + 4GB DDR4 Lexar 2667 MHz  |
-+----------------+--------------------------------------------------+
-| Audio          | Realtek High Definition Audio (10EC 0257)        |
-+----------------+--------------------------------------------------+
-| Trackpad       | I2C HID-compliant mouse, MSFT0001                |
-+----------------+--------------------------------------------------+
-| Storage        | 512GB PCIe® NVMe™ M.2 SSD - Micron MTFDHBA512QFD |
-+----------------+--------------------------------------------------+
-| Wireless LAN   | Intel Wireless-AC 9560                           |
-+----------------+--------------------------------------------------+
-| Bluetooth      | Intel(R) Wireless Bluetooth(R)                   |
-+----------------+--------------------------------------------------+
-| Bootloader     | OpenCore 1.0.5                                   |
-+----------------+--------------------------------------------------+
-| OS Version     | Olarila MacOS Sequoia 15.6                       |
-+----------------+--------------------------------------------------+
+| Component | Detail |
+| :--- | :--- |
+| **Model Type** | Lenovo IdeaPad Slim 3 14IML05 |
+| **Processor** | Intel® Core™ i3-10110U @ 2.10GHz (Comet Lake) |
+| **Graphics** | Intel® UHD Graphics 630 (CML GT2) |
+| **Memory** | 8GB DDR4 2667MHz (4GB Soldered + 4GB Lexar) |
+| **Audio** | Realtek ALC257 (Layout-ID: [ISI_DISINI]) |
+| **Trackpad** | I2C HID-compliant (MSFT0001) |
+| **Storage** | 512GB Micron MTFDHBA512QFD NVMe SSD |
+| **Wireless LAN** | Intel® Wireless-AC 9560 |
+| **Bluetooth** | Intel® Wireless Bluetooth® |
+| **Bootloader** | OpenCore 1.0.5 |
+| **SMBIOS** | MacBookPro16,3 (2019) |
+| **OS Version** | macOS Sequoia 15.6 (Olarila) |
+
+---
+
+### 🛠️ Notes on this EFI:
+* **SMBIOS**: Serial Number, Board Serial, dan UUID sudah di-generate ulang (Silakan generate sendiri untuk keamanan iCloud).
+* **OS Support**: Tested on macOS Sequoia 15.6.
+* **Kexts**: Menggunakan kombinasi kext standar dan beberapa patch khusus untuk WiFi/BT di Sequoia.
 
 
 
@@ -155,7 +153,7 @@ Kalo udah siap, buka **Hackintool**, terus ke tab **PCIe**.
 Cari bagian **Network Controller**, klik kanan, terus pilih **Copy Device Path** —  
 > ⚠️ Bukan yang *ioreg*, tapi yang *Device Path* ya.
 
-![Hackintool Copy Device Path](docs/screenshots/hackintool_pcie.png)
+![Hackintool Copy Device Path](docs/screenshots/hacitul.png)
 
 ---
 
@@ -163,7 +161,7 @@ Sekarang buka **OpenCore Configurator**, terus load file `example_fakeid_intel.p
 yang udah lo siapin dari Google Drive.  
 Masuk ke bagian **DeviceProperties**, terus **paste Device Path** yang tadi dicopy dari Hackintool.
 
-![OpenCore DeviceProperties Paste](docs/screenshots/opencore_devicepath.png)
+![OpenCore DeviceProperties Paste](docs/screenshots/iniexampleplist.png)
 
 ---
 
@@ -171,11 +169,11 @@ Kalau udah kayak gitu, lanjut buka **config.plist asli** lo.
 Masuk ke tab **Kernel**, lalu tinggal **drag & drop kext‑kext yang baru**.  
 Taruh **di bawah Lilu dan VirtualSMC** biar urutannya aman.
 
-![OpenCore Kernel Add](docs/screenshots/opencore_kernel_add.png)
+![OpenCore Kernel Add](docs/screenshots/kernelkextspng)
 
 Masih di tab **Kernel**, buka sub‑tab **Block**, terus tambahin `iokit.IOSkywalkFamily`.
 
-![OpenCore Kernel Block](docs/screenshots/opencore_kernel_block.png)
+![OpenCore Kernel Block](docs/screenshots/block.png)
 
 ---
 
@@ -190,12 +188,14 @@ kasih pagar `#` di depan key‑nya.
 > Tujuannya biar device spoof itu gak aktif terus setiap boot,  
 > karena nanti macOS bakal nyari “perasaan gue ada Broadcom keinstall, kok gamau ya dia?”
 
-![Disable Spoof Device](docs/screenshots/opencore_device_disable.png)
+![alt text](docs/screenshots/udahrename.png)
 
 ---
 
 ✅ **Selesai.**  
 Sekarang root patch udah diterapin, spoof device aman, dan sistem gak bakal nyangkut di driver palsu.
+
+Selamat Menikmati nikmatnya OS Unix yang dikekang kaya ortu dari seorang Anak tunggal yang apa apa kaga boleh wkwk
 
 
 
