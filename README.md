@@ -35,6 +35,8 @@ Dokumentasi aja lah ini 8 Bulan, jerih payah dan kena bully di grup (sampe sekar
 * **SMBIOS**: Serial Number, Board Serial, dan UUID sudah di-generate ulang (Silakan generate sendiri untuk keamanan iCloud).
 * **OS Support**: Tested on macOS Sequoia 15.6.
 * **Kexts**: Menggunakan kombinasi kext standar dan beberapa patch khusus untuk WiFi/BT di Sequoia.
+* **SEBELUM LANJUT** : kalo pengen install MacOS, Baca dari sini aja dulu 
+* **Dortania's Webpage** [mau baca?](https://dortania.github.io/OpenCore-Install-Guide/)
 
 
 
@@ -141,17 +143,18 @@ EFI
     └── config.plist
 ```
 ### 4. BIOS Settings (Lenovo)
-Pastikan settingan BIOS bener biar nggak mentok di logo:
+> Pastikan settingan BIOS bener biar nggak mentok di logo.
 Disable:
 
-Fast Boot
-Secure Boot
-Intel SGX
-Virtualization (opsional)
-Enable:
-UEFI Mode
-AHCI
-Virtualization (kalau mau pake Docker/VM setelah stabil)
+- Fast Boot
+- Secure Boot
+- Intel SGX
+- Virtualization (opsional)
+- Enable:
+- UEFI Mode
+- AHCI
+
+
 
 ---
 
