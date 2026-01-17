@@ -102,6 +102,8 @@ EFI/
 
 Ikutin step-step di bawah ini biar nggak kernel panic pas booting.  
 > Inget, ini buat **Lenovo Ideapad 3-14IML05 (Comet Lake)**.
+> Bisa buat Laptop lain, step sama tapi ur on your own kid.
+> ga bertanggung jawab kalo laptop lu cuman bisa jadi tempat dudukan kucing nanti (bricked)
 
 ---
 
