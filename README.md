@@ -36,7 +36,7 @@ Dokumentasi aja lah ini 8 Bulan, jerih payah dan kena bully di grup (sampe sekar
 * **OS Support**: Tested on macOS Sequoia 15.6.
 * **Kexts**: Menggunakan kombinasi kext standar dan beberapa patch khusus untuk WiFi/BT di Sequoia.
 * **SEBELUM LANJUT** : kalo pengen install MacOS, Baca dari sini aja dulu 
-* **Dortania's Webpage** [mau baca?](https://dortania.github.io/OpenCore-Install-Guide/)
+Dortania's Webpage [mau baca?](https://dortania.github.io/OpenCore-Install-Guide/)
 
 
 
